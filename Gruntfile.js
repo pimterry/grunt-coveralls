@@ -26,16 +26,16 @@ module.exports = function(grunt) {
         // Configuration to be run (and then tested).
         coveralls: {
             basic_test: {
-                lcov: 'test/fixtures/lcov.info'
+                src: 'test/fixtures/lcov.info'
             },
             multiple_files_test: {
-                lcov: ['test/fixtures/lcov.info', 'test/fixtures/lcov2.info']
+                src: ['test/fixtures/lcov.info', 'test/fixtures/lcov2.info']
             },
             missing_file_test: {
-                lcov: 'test/fixtures/nonexistent_lcov.info'
+                src: 'test/fixtures/nonexistent_lcov.info'
             },
             missing_files_test: {
-                lcov: ['lcov.info', 'test/fixtures/nonexistent_lcov.info']
+                src: ['lcov.info', 'test/fixtures/nonexistent_lcov.info']
             },
 
             test_test_coverage: {
@@ -49,6 +49,9 @@ module.exports = function(grunt) {
         },
 
         watch: {
+            options: {
+                spawn: false
+            },
             gruntfile: {
                 files: 'Gruntfile.js',
                 tasks: ['jshint']
