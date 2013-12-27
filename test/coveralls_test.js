@@ -55,14 +55,66 @@ exports.coveralls = {
     },
 
     submits_nothing_if_the_file_is_missing: function (test) {
-        child_process.spawn = sinon.stub();
-
         runGruntTask('coveralls:missing_file_test', function (result) {
-
             test.ok(!result, 'Should fail');
 
             test.ok(!child_process.spawn.called);
             test.done();
         });
+    },
+
+    submits_multiple_files: function (test) {
+        var procStub = stubChildProcess();
+        var inputStub = procStub.stdin.end;
+        child_process.spawn.returns(procStub);
+
+        runGruntTask('coveralls:multiple_files_test', function (result) {
+            test.ok(result, 'Should be successful');
+
+            test.ok(inputStub.calledTwice);
+            test.ok(inputStub.calledWith('lcov.info content'), 'Should send first file data');
+            test.ok(inputStub.calledWith('lcov2.info content'), 'Should send second file data');
+            test.done();
+        });
+
+        procStub.on.withArgs('exit').yield(0);
+    },
+
+    submits_present_files_only_if_some_are_missing: function (test) {
+        var procStub = stubChildProcess();
+        var inputStub = procStub.stdin.end;
+        child_process.spawn.returns(procStub);
+
+        runGruntTask('coveralls:some_missing_files_test', function (result) {
+            test.ok(result, 'Should be successful');
+
+            test.ok(inputStub.calledOnce);
+            test.ok(inputStub.calledWith('lcov.info content'), 'Should send first file data');
+            test.done();
+        });
+
+        procStub.on.withArgs('exit').yield(0);
+    },
+
+    fails_if_multiple_files_listed_and_all_files_are_missing: function (test) {
+        runGruntTask('coveralls:all_missing_files_test', function (result) {
+            test.ok(!result, 'Should fail');
+
+            test.ok(!child_process.spawn.called);
+            test.done();
+        });
+    },
+
+    fails_if_any_files_fail_to_upload: function (test) {
+        var procStub = stubChildProcess();
+        child_process.spawn.returns(procStub);
+
+        runGruntTask('coveralls:basic_test', function (result) {
+            test.ok(!result, 'Should fail');
+            test.done();
+        });
+
+        // Process returns non-0 status code
+        procStub.on.withArgs('exit').yield(1);
     }
 };

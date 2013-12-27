@@ -34,12 +34,15 @@ module.exports = function(grunt) {
             missing_file_test: {
                 src: 'test/fixtures/nonexistent_lcov.info'
             },
-            missing_files_test: {
-                src: ['lcov.info', 'test/fixtures/nonexistent_lcov.info']
+            some_missing_files_test: {
+                src: ['test/fixtures/lcov.info', 'test/fixtures/nonexistent_lcov.info']
+            },
+            all_missing_files_test: {
+                src: ['test/fixtures/nonexistent_lcov1.info', 'test/fixtures/nonexistent_lcov2.info']
             },
 
-            test_test_coverage: {
-
+            grunt_coveralls_real_coverage: {
+                src: 'coverage-results/lcov.info'
             }
         },
 
