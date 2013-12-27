@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 
         coveralls.on('exit', function (code) {
             if (code !== 0) {
-                grunt.log.error("Failed to submit " + fileName + " to coveralls");
+                grunt.verbose.error("Failed to submit " + fileName + " to coveralls");
                 callback(false);
             } else {
                 grunt.verbose.ok("Successfully submitted " + fileName + " to coveralls");

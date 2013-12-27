@@ -26,7 +26,8 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "ci": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
@@ -35,7 +36,9 @@
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-watch": "~0.5.3",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "istanbul": "~0.2.2",
+    "grunt-exec": "~0.4.3"
   },
   "peerDependencies": {
     "grunt": "~0.4.2"

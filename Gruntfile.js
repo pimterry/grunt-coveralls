@@ -23,7 +23,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // Configuration to be run (and then tested).
         coveralls: {
             basic_test: {
                 src: 'test/fixtures/lcov.info'
@@ -42,11 +41,11 @@ module.exports = function(grunt) {
             },
 
             grunt_coveralls_real_coverage: {
-                src: 'coverage-results/lcov.info'
+                src: 'coverage/lcov.info'
             }
         },
 
-        // Unit tests.
+        // Runs unit tests via Istanbul for coverage
         nodeunit: {
             tests: ['test/*_test.js']
         },
@@ -76,8 +75,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('default', ['test']);
     grunt.registerTask('test', ['jshint', 'nodeunit']);
-
 };

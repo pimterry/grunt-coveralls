@@ -1,6 +1,7 @@
 .idea
 *.iml
 
+coverage
 lib-cov
 *.seed
 *.log
