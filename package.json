@@ -1,0 +1,44 @@
+{
+  "name": "grunt-coveralls",
+  "description": "Grunt task to load coverage results and submit them to Coveralls.io",
+  "version": "0.1.0",
+  "homepage": "https://github.com/pimterry/grunt-coveralls",
+  "author": {
+    "name": "Tim Perry",
+    "email": "pimterry@gmail.com",
+    "url": "http://tim-perry.co.uk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pimterry/grunt-coveralls.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pimterry/grunt-coveralls/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/pimterry/grunt-coveralls/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
