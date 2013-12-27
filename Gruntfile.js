@@ -10,7 +10,6 @@
 
 module.exports = function(grunt) {
 
-    // Project configuration.
     grunt.initConfig({
         jshint: {
             all: [
@@ -45,7 +44,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // Runs unit tests via Istanbul for coverage
         nodeunit: {
             tests: ['test/*_test.js']
         },

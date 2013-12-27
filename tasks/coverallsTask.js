@@ -36,7 +36,8 @@ module.exports = function(grunt) {
         grunt.verbose.writeln("Submitting file to coveralls.io: " + fileName);
 
         var child_process = require('child_process');
-        var coveralls = child_process.spawn("node",["node_modules/.bin/coveralls"], {
+        var path = require('path');
+        var coveralls = child_process.spawn("node", [path.resolve(__dirname, "../node_modules/.bin/coveralls")], {
             stdio: ['pipe', process.stdout, process.stderr]
         });
 

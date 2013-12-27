@@ -2,6 +2,7 @@
 
 var grunt = require('grunt');
 var sinon = require('sinon');
+var path = require('path');
 
 var child_process = require('child_process');
 
@@ -46,6 +47,7 @@ exports.coveralls = {
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(result, 'Should be successful');
 
+            test.ok(child_process.spawn.calledWith('node', [path.resolve('./node_modules/.bin/coveralls')]));
             test.ok(inputStub.calledOnce);
             test.ok(inputStub.calledWith('lcov.info content'), 'Should send lcov data');
             test.done();
