@@ -19,12 +19,12 @@ grunt.loadNpmTasks('grunt-coveralls');
 
 ## The "coveralls" task
 
-Grunt-coveralls takes one or more lcov file, and uploads them to [coveralls.io](https://coveralls.io).
+Grunt-coveralls takes one or more lcov files, and uploads them to [coveralls.io](https://coveralls.io).
 
-Everything more specific than that it handled internally by [node-coveralls](https://github.com/cainus/node-coveralls), and Coveralls itself.
+Everything more specific than that is handled internally by [node-coveralls](https://github.com/cainus/node-coveralls), and the Coveralls service itself.
 
 
-### Usage Examples
+### Usage
 
 The only required option is a 'src' parameter, which accepts all the standard grunt src formats (plain path, glob, array of paths) and attempts to parse the matched lcov files and upload them.
 
