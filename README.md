@@ -1,4 +1,4 @@
-# grunt-coveralls
+# Grunt-Coveralls
 
 > Grunt task to load coverage results and submit them to Coveralls.io
 
@@ -19,71 +19,36 @@ grunt.loadNpmTasks('grunt-coveralls');
 
 ## The "coveralls" task
 
-### Overview
-In your project's Gruntfile, add a section named `coveralls` to the data object passed into `grunt.initConfig()`.
+Grunt-coveralls takes one or more lcov file, and uploads them to [coveralls.io](https://coveralls.io).
 
-```js
-grunt.initConfig({
-  coveralls: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
-});
-```
+Everything more specific than that it handled internally by [node-coveralls](https://github.com/cainus/node-coveralls), and Coveralls itself.
 
-### Options
-
-#### options.separator
-Type: `String`
-Default value: `',  '`
-
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+The only required option is a 'src' parameter, which accepts all the standard grunt src formats (plain path, glob, array of paths) and attempts to parse the matched lcov files and upload them.
 
-```js
-grunt.initConfig({
-  coveralls: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+This grunt task will pass as long as at least one file is matched, and all matched files are uploaded successfully.
 
 ```js
 grunt.initConfig({
   coveralls: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      // LCOV coverage file relevant to every target
+      src: 'coverage-results/lcov.info'
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+    your_target: {
+      // Target-specific LCOV coverage file
+      src: 'coverage-results/extra-results-*.info'
     },
   },
 });
 ```
 
+This can then be run with `grunt coveralls` or `grunt coveralls:your_target`. For a practical example, look at this project, which uses itself to track its own coverage.
+
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. To ensure your code runs correctly, run `npm test`.
 
 ## Release History
 _(Nothing yet)_
