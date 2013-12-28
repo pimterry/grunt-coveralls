@@ -1,7 +1,8 @@
-Grunt-Coveralls [![Build Status](https://travis-ci.org/pimterry/grunt-coveralls.png)](https://travis-ci.org/pimterry/grunt-coveralls) [![Coverage Status](https://coveralls.io/repos/pimterry/grunt-coveralls/badge.png?branch=master)](https://coveralls.io/r/pimterry/grunt-coveralls?branch=master) [![Dependency status](https://david-dm.org/pimterry/grunt-coveralls/status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=dependencies&view=table) [![Dev Dependency Status](https://david-dm.org/pimterry/grunt-coveralls/dev-status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=devDependencies&view=table)
-=====================================================================================================
-
+Grunt-Coveralls
+===============
 > Grunt task to load coverage results and submit them to Coveralls.io
+
+[![Build Status](https://travis-ci.org/pimterry/grunt-coveralls.png)](https://travis-ci.org/pimterry/grunt-coveralls) [![Coverage Status](https://coveralls.io/repos/pimterry/grunt-coveralls/badge.png?branch=master)](https://coveralls.io/r/pimterry/grunt-coveralls?branch=master) [![Dependency status](https://david-dm.org/pimterry/grunt-coveralls/status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=dependencies&view=table) [![Dev Dependency Status](https://david-dm.org/pimterry/grunt-coveralls/dev-status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=devDependencies&view=table)
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
