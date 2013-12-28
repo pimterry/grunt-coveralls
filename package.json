@@ -44,7 +44,11 @@
     "grunt": "~0.4.2"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "coverage",
+    "coveralls",
+    "grunt",
+    "lcov"
   ],
   "dependencies": {
     "coveralls": "~2.6.1"
