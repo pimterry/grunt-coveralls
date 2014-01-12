@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         var child_process = require('child_process');
         var coverallsRunnerPath = require.resolve('coveralls/bin/coveralls');
 
-        var coveralls = child_process.fork(coverallsRunnerPath, [], {
+        var coveralls = child_process.spawn(process.execPath, [coverallsRunnerPath], {
             stdio: ['pipe', process.stdout, process.stderr]
         });
 

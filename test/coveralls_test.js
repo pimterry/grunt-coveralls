@@ -26,28 +26,29 @@ function stubChildProcess() {
     };
 }
 
-var child_process_fork = child_process.fork;
+var child_process_spawn = child_process.spawn;
 
 exports.coveralls = {
     setUp: function (callback) {
-        child_process.fork = sinon.stub();
+        child_process.spawn = sinon.stub();
         callback();
     },
 
     tearDown: function (callback) {
-        child_process.fork = child_process_fork;
+        child_process.spawn = child_process_spawn;
         callback();
     },
 
     submits_file_to_coveralls: function (test) {
         var procStub = stubChildProcess();
         var inputStub = procStub.stdin.end;
-        child_process.fork.returns(procStub);
+        child_process.spawn.returns(procStub);
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(result, 'Should be successful');
 
-            test.ok(child_process.fork.calledWith(path.resolve('./node_modules/coveralls/bin/coveralls.js')));
+            var pathToCoveralls = path.resolve('./node_modules/coveralls/bin/coveralls.js');
+            test.ok(child_process.spawn.calledWith(sinon.match('node'), [pathToCoveralls]));
             test.ok(inputStub.calledOnce);
             test.ok(inputStub.calledWith('lcov.info content'), 'Should send lcov data');
             test.done();
@@ -60,7 +61,7 @@ exports.coveralls = {
         runGruntTask('coveralls:missing_file_test', function (result) {
             test.ok(!result, 'Should fail');
 
-            test.ok(!child_process.fork.called);
+            test.ok(!child_process.spawn.called);
             test.done();
         });
     },
@@ -68,7 +69,7 @@ exports.coveralls = {
     submits_multiple_files: function (test) {
         var procStub = stubChildProcess();
         var inputStub = procStub.stdin.end;
-        child_process.fork.returns(procStub);
+        child_process.spawn.returns(procStub);
 
         runGruntTask('coveralls:multiple_files_test', function (result) {
             test.ok(result, 'Should be successful');
@@ -85,7 +86,7 @@ exports.coveralls = {
     submits_present_files_only_if_some_are_missing: function (test) {
         var procStub = stubChildProcess();
         var inputStub = procStub.stdin.end;
-        child_process.fork.returns(procStub);
+        child_process.spawn.returns(procStub);
 
         runGruntTask('coveralls:some_missing_files_test', function (result) {
             test.ok(result, 'Should be successful');
@@ -102,14 +103,14 @@ exports.coveralls = {
         runGruntTask('coveralls:all_missing_files_test', function (result) {
             test.ok(!result, 'Should fail');
 
-            test.ok(!child_process.fork.called);
+            test.ok(!child_process.spawn.called);
             test.done();
         });
     },
 
     fails_if_any_files_fail_to_upload: function (test) {
         var procStub = stubChildProcess();
-        child_process.fork.returns(procStub);
+        child_process.spawn.returns(procStub);
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
