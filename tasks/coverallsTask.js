@@ -35,25 +35,17 @@ module.exports = function(grunt) {
     function submitToCoveralls(fileName, callback) {
         grunt.verbose.writeln("Submitting file to coveralls.io: " + fileName);
 
-        var child_process = require('child_process');
-        var coverallsRunnerPath = require.resolve('coveralls/bin/coveralls');
-
-        var coveralls = child_process.spawn(process.execPath, [coverallsRunnerPath], {
-            stdio: ['pipe', process.stdout, process.stderr]
-        });
-
-        coveralls.on('exit', function (code) {
-            if (code !== 0) {
-                grunt.verbose.error("Failed to submit " + fileName + " to coveralls");
-                callback(false);
-            } else {
-                grunt.verbose.ok("Successfully submitted " + fileName + " to coveralls");
-                callback(true);
-            }
-        });
-
+        var coveralls = require('coveralls');
         var fs = require('fs');
-        coveralls.stdin.end(fs.readFileSync(fileName, 'utf8'));
+
+        try {
+            coveralls.handleInput(fs.readFileSync(fileName, 'utf8'));
+            grunt.verbose.ok("Successfully submitted " + fileName + " to coveralls");
+            callback(true);
+        } catch (e) {
+            grunt.verbose.error("Failed to submit " + fileName + " to coveralls (" + e + ")");
+            callback(false);
+        }
     }
 
     grunt.registerMultiTask('coveralls', 'Grunt task to load coverage results and submit them to Coveralls.io', Runner);
