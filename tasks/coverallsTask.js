@@ -1,5 +1,8 @@
 'use strict';
 
+var coveralls = require('coveralls');
+var fs = require('fs');
+
 module.exports = function(grunt) {
     function Runner() {
         var done = this.async();
@@ -10,7 +13,8 @@ module.exports = function(grunt) {
         }
 
         var successful = true;
-        var remainingSubmissions = this.filesSrc.length;
+        var filesSrc = this.filesSrc;
+        var remainingSubmissions = filesSrc.length;
 
         function receiveResult(result) {
             successful = successful && result;
@@ -27,25 +31,41 @@ module.exports = function(grunt) {
             }
         }
 
-        for (var ii = 0; ii < this.filesSrc.length; ii++) {
-            submitToCoveralls(this.filesSrc[ii], receiveResult);
-        }
+        coveralls.getOptions(function(err, options) {
+            if (err) {
+                grunt.verbose.error("Failed to get options of coveralls");
+                return done(false);
+            }
+            for (var ii = 0; ii < filesSrc.length; ii++) {
+                submitToCoveralls(options, filesSrc[ii], receiveResult);
+            }
+        });
     }
 
-    function submitToCoveralls(fileName, callback) {
-        grunt.verbose.writeln("Submitting file to coveralls.io: " + fileName);
+    function submitToCoveralls(options, fileName, callback) {
+        fs.readFile(fileName, {encoding:"utf8"}, function(err, fileContent) {
+            if (err) {
+                grunt.verbose.error("Failed to read file: " + fileName);
+                return callback(false);
+            }
 
-        var coveralls = require('coveralls');
-        var fs = require('fs');
+            grunt.verbose.writeln("Converting file for coveralls.io: " + fileName);
+            coveralls.convertLcovToCoveralls(fileContent, options, function(err, postData) {
+                if (err) {
+                    grunt.verbose.error("Failed to convert file for coveralls.io: " + fileName);
+                    return callback(false);
+                }
 
-        try {
-            coveralls.handleInput(fs.readFileSync(fileName, 'utf8'));
-            grunt.verbose.ok("Successfully submitted " + fileName + " to coveralls");
-            callback(true);
-        } catch (e) {
-            grunt.verbose.error("Failed to submit " + fileName + " to coveralls (" + e + ")");
-            callback(false);
-        }
+                grunt.verbose.writeln("Submitting file to coveralls.io: " + fileName);
+                coveralls.sendToCoveralls(postData, function(err, response, body) {
+                    if (err || response.statusCode !== 200) {
+                        grunt.verbose.error("Failed to submit file to coveralls.io: " + fileName + " (" + response.statusCode + " " + body + ")");
+                        return callback(false);
+                    }
+                    return callback(true);
+                });
+            });
+        });
     }
 
     grunt.registerMultiTask('coveralls', 'Grunt task to load coverage results and submit them to Coveralls.io', Runner);
