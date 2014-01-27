@@ -1,6 +1,7 @@
 'use strict';
 
 var coveralls = require('coveralls');
+var fs = require('fs');
 var grunt = require('grunt');
 var sinon = require('sinon');
 
@@ -15,16 +16,16 @@ function runGruntTask(taskName, callback) {
     }, task.args);
 }
 
-var coveralls_handleInput = coveralls.handleInput;
-
 exports.coveralls = {
     setUp: function (callback) {
-        coveralls.handleInput = sinon.stub();
+        sinon.stub(coveralls, 'handleInput').callsArgWith(1, null);
+        sinon.spy(fs, 'readFile');
         callback();
     },
 
     tearDown: function (callback) {
-        coveralls.handleInput = coveralls_handleInput;
+        fs.readFile.restore();
+        coveralls.handleInput.restore();
         callback();
     },
 
@@ -35,7 +36,7 @@ exports.coveralls = {
             test.ok(result, 'Should be successful');
 
             test.ok(handleStub.calledOnce);
-            test.equal(handleStub.firstCall.args[0], 'lcov.info content', 'Should send lcov data');
+            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send lcov data');
             test.done();
         });
     },
@@ -56,8 +57,8 @@ exports.coveralls = {
             test.ok(result, 'Should be successful');
 
             test.ok(handleStub.calledTwice);
-            test.equal(handleStub.firstCall.args[0], 'lcov.info content', 'Should send first file data');
-            test.equal(handleStub.secondCall.args[0], 'lcov2.info content', 'Should send second file data');
+            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send first file data');
+            test.equal(handleStub.getCall(1).args[0], 'lcov2.info content', 'Should send second file data');
             test.done();
         });
     },
@@ -69,7 +70,7 @@ exports.coveralls = {
             test.ok(result, 'Should be successful');
 
             test.ok(handleStub.calledOnce);
-            test.equal(handleStub.firstCall.args[0], 'lcov.info content', 'Should send first file data');
+            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send first file data');
             test.done();
         });
     },
@@ -83,12 +84,26 @@ exports.coveralls = {
         });
     },
 
-    fails_if_any_files_fail_to_upload: function (test) {
-        var handleStub = coveralls.handleInput;
-        handleStub.throws("Error");
+    fails_if_file_is_not_readable: function (test) {
+        fs.readFile.restore();
+        var readStub = sinon.stub(fs, 'readFile').callsArgWith(2, 'Error');
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
+
+            test.ok(readStub.calledOnce);
+            test.done();
+        });
+    },
+
+    fails_if_any_files_fail_to_upload: function (test) {
+        coveralls.handleInput.restore();
+        var handleStub = sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
+
+        runGruntTask('coveralls:basic_test', function (result) {
+            test.ok(!result, 'Should fail');
+
+            test.ok(handleStub.calledOnce);
             test.done();
         });
     }

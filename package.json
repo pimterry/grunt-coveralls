@@ -51,6 +51,6 @@
     "lcov"
   ],
   "dependencies": {
-    "coveralls": "~2.6.1"
+    "coveralls": "~2.7.0"
   }
 }
