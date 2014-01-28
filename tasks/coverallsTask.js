@@ -38,14 +38,22 @@ module.exports = function(grunt) {
         var coveralls = require('coveralls');
         var fs = require('fs');
 
-        try {
-            coveralls.handleInput(fs.readFileSync(fileName, 'utf8'));
+        fs.readFile(fileName, 'utf8', function(err, fileContent) {
+          if (err) {
+            grunt.verbose.error("Failed to read file: " + fileName);
+            return callback(false);
+          }
+
+          coveralls.handleInput(fileContent, function(err) {
+            if (err) {
+              grunt.verbose.error("Failed to submit " + fileName + " to coveralls");
+              return callback(false);
+            }
+
             grunt.verbose.ok("Successfully submitted " + fileName + " to coveralls");
             callback(true);
-        } catch (e) {
-            grunt.verbose.error("Failed to submit " + fileName + " to coveralls (" + e + ")");
-            callback(false);
-        }
+          });
+        });
     }
 
     grunt.registerMultiTask('coveralls', 'Grunt task to load coverage results and submit them to Coveralls.io', Runner);
