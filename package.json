@@ -1,7 +1,7 @@
 {
   "name": "grunt-coveralls",
   "description": "Grunt task to load coverage results and submit them to Coveralls.io",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/pimterry/grunt-coveralls",
   "author": {
     "name": "Tim Perry",
