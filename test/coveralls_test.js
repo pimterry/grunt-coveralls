@@ -40,13 +40,11 @@ exports.coveralls = {
     },
 
     submits_file_to_coveralls: function (test) {
-        var handleStub = coveralls.handleInput;
-
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(result, 'Should be successful');
 
-            test.ok(handleStub.calledOnce);
-            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send lcov data');
+            test.ok(coveralls.handleInput.calledOnce);
+            test.equal(coveralls.handleInput.getCall(0).args[0], 'lcov.info content', 'Should send lcov data');
             test.done();
         });
     },
@@ -96,7 +94,7 @@ exports.coveralls = {
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
 
-            test.ok(fs.readFile.calledOnce);
+            test.ok(!coveralls.handleInput.called);
             test.done();
         });
     },
@@ -106,20 +104,15 @@ exports.coveralls = {
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
-
-            test.ok(coveralls.handleInput.calledOnce);
             test.done();
         });
     },
 
     force_mode_doesnt_produce_grunt_errors: function (test) {
-        coveralls.handleInput.restore();
-        var handleStub = sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
+        givenCoverallsWillFail();
 
         runGruntTask('coveralls:basic_test_force', function (result) {
             test.ok(result, 'Should not fail when options.force === true');
-
-            test.ok(handleStub.calledOnce);
             test.done();
         });
     }
