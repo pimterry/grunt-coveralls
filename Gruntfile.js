@@ -26,6 +26,12 @@ module.exports = function(grunt) {
             basic_test: {
                 src: 'test/fixtures/lcov.info'
             },
+            basic_test_warn: {
+                src: 'test/fixtures/lcov.info',
+                options: {
+                    warn: true
+                }
+            },
             multiple_files_test: {
                 src: ['test/fixtures/lcov.info', 'test/fixtures/lcov2.info']
             },
@@ -38,7 +44,6 @@ module.exports = function(grunt) {
             all_missing_files_test: {
                 src: ['test/fixtures/nonexistent_lcov1.info', 'test/fixtures/nonexistent_lcov2.info']
             },
-
             grunt_coveralls_real_coverage: {
                 src: 'coverage/lcov.info'
             }

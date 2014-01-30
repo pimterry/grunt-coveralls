@@ -106,5 +106,17 @@ exports.coveralls = {
             test.ok(handleStub.calledOnce);
             test.done();
         });
+    },
+
+    warn_mode_doenst_print_grunt_error: function (test) {
+        coveralls.handleInput.restore();
+        var handleStub = sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
+
+        runGruntTask('coveralls:basic_test_warn', function (result) {
+            test.ok(result, 'Should not fail when options.warn === true');
+
+            test.ok(handleStub.calledOnce);
+            test.done();
+        });
     }
 };

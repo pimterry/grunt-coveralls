@@ -37,7 +37,11 @@ grunt.initConfig({
   coveralls: {
     options: {
       // LCOV coverage file relevant to every target
-      src: 'coverage-results/lcov.info'
+      src: 'coverage-results/lcov.info',
+
+      // if true grunt-coveralls will print only a warning rather than
+      // an error to prevent CI builds from failing. Example: coveralls site is down
+      warn: false
     },
     your_target: {
       // Target-specific LCOV coverage file

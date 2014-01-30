@@ -2,7 +2,8 @@
 
 module.exports = function(grunt) {
     function Runner() {
-        var done = this.async();
+        var done = this.async(),
+            warn = this.options().warn;
 
         if (this.filesSrc.length === 0) {
             grunt.log.error('No src files could be found for grunt-coveralls');
@@ -19,6 +20,9 @@ module.exports = function(grunt) {
             if (remainingSubmissions === 0) {
                 if (successful) {
                     grunt.log.ok("Successfully submitted coverage results to coveralls");
+                    done(true);
+                } else if (warn) {
+                    grunt.log.warn("WARNING: Failed to submit coverage results to coveralls");
                     done(true);
                 } else {
                     grunt.log.error("Failed to submit coverage results to coveralls");
