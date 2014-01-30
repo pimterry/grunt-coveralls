@@ -112,12 +112,12 @@ exports.coveralls = {
         });
     },
 
-    warn_mode_doenst_print_grunt_error: function (test) {
+    force_mode_doesnt_produce_grunt_errors: function (test) {
         coveralls.handleInput.restore();
         var handleStub = sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
 
-        runGruntTask('coveralls:basic_test_warn', function (result) {
-            test.ok(result, 'Should not fail when options.warn === true');
+        runGruntTask('coveralls:basic_test_force', function (result) {
+            test.ok(result, 'Should not fail when options.force === true');
 
             test.ok(handleStub.calledOnce);
             test.done();

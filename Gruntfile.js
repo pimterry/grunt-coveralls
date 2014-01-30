@@ -26,10 +26,10 @@ module.exports = function(grunt) {
             basic_test: {
                 src: 'test/fixtures/lcov.info'
             },
-            basic_test_warn: {
+            basic_test_force: {
                 src: 'test/fixtures/lcov.info',
                 options: {
-                    warn: true
+                    force: true
                 }
             },
             multiple_files_test: {
