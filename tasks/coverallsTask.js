@@ -40,6 +40,10 @@ module.exports = function(grunt) {
         grunt.verbose.writeln("Submitting file to coveralls.io: " + fileName);
 
         var coveralls = require('coveralls');
+
+        // Override coveralls option processing until it handles use as a library better (TODO)
+        coveralls.getOptions = coveralls.getBaseOptions;
+
         var fs = require('fs');
 
         fs.readFile(fileName, 'utf8', function(err, fileContent) {
