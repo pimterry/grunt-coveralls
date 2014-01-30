@@ -16,6 +16,16 @@ function runGruntTask(taskName, callback) {
     }, task.args);
 }
 
+function givenCoverallsWillFail() {
+    coveralls.handleInput.restore();
+    sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
+}
+
+function givenFileReadsWillFail() {
+    fs.readFile.restore();
+    sinon.stub(fs, 'readFile').callsArgWith(2, 'Error');
+}
+
 exports.coveralls = {
     setUp: function (callback) {
         sinon.stub(coveralls, 'handleInput').callsArgWith(1, null);
@@ -51,26 +61,22 @@ exports.coveralls = {
     },
 
     submits_multiple_files: function (test) {
-        var handleStub = coveralls.handleInput;
-
         runGruntTask('coveralls:multiple_files_test', function (result) {
             test.ok(result, 'Should be successful');
 
-            test.ok(handleStub.calledTwice);
-            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send first file data');
-            test.equal(handleStub.getCall(1).args[0], 'lcov2.info content', 'Should send second file data');
+            test.ok(coveralls.handleInput.calledTwice);
+            sinon.assert.calledWith(coveralls.handleInput, 'lcov.info content');
+            sinon.assert.calledWith(coveralls.handleInput, 'lcov2.info content');
             test.done();
         });
     },
 
     submits_present_files_only_if_some_are_missing: function (test) {
-        var handleStub = coveralls.handleInput;
-
         runGruntTask('coveralls:some_missing_files_test', function (result) {
             test.ok(result, 'Should be successful');
 
-            test.ok(handleStub.calledOnce);
-            test.equal(handleStub.getCall(0).args[0], 'lcov.info content', 'Should send first file data');
+            test.ok(coveralls.handleInput.calledOnce);
+            sinon.assert.calledWith(coveralls.handleInput, 'lcov.info content');
             test.done();
         });
     },
@@ -85,25 +91,23 @@ exports.coveralls = {
     },
 
     fails_if_file_is_not_readable: function (test) {
-        fs.readFile.restore();
-        var readStub = sinon.stub(fs, 'readFile').callsArgWith(2, 'Error');
+        givenFileReadsWillFail();
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
 
-            test.ok(readStub.calledOnce);
+            test.ok(fs.readFile.calledOnce);
             test.done();
         });
     },
 
     fails_if_any_files_fail_to_upload: function (test) {
-        coveralls.handleInput.restore();
-        var handleStub = sinon.stub(coveralls, 'handleInput').callsArgWith(1, 'Error');
+        givenCoverallsWillFail();
 
         runGruntTask('coveralls:basic_test', function (result) {
             test.ok(!result, 'Should fail');
 
-            test.ok(handleStub.calledOnce);
+            test.ok(coveralls.handleInput.calledOnce);
             test.done();
         });
     },
