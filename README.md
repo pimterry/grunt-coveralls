@@ -52,7 +52,9 @@ grunt.initConfig({
 });
 ```
 
-This can then be run with `grunt coveralls` or `grunt coveralls:your_target`. For a practical example, look at this project, which uses itself to track its own coverage.
+This can then be run with `grunt coveralls` or `grunt coveralls:your_target`. The outcome will be printed to the console. For a practical example, look at this project, which uses itself to track its own coverage.
+
+Note if you are new to grunt: You need to specify at least one target. Just specifying the options won't work.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. To ensure your code runs correctly, run `npm test`.
