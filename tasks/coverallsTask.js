@@ -48,13 +48,13 @@ module.exports = function(grunt) {
 
         fs.readFile(fileName, 'utf8', function(err, fileContent) {
           if (err) {
-            grunt.verbose.error("Failed to read file: " + fileName);
+            grunt.log.error("Failed to read file '" + fileName + "', with error: " + err);
             return callback(false);
           }
 
           coveralls.handleInput(fileContent, function(err) {
             if (err) {
-              grunt.verbose.error("Failed to submit " + fileName + " to coveralls");
+              grunt.log.error("Failed to submit '" + fileName + "' to coveralls: " + err);
               return callback(false);
             }
 
