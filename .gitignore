@@ -1,5 +1,6 @@
 .idea
 *.iml
+*.sw*
 
 coverage
 lib-cov
