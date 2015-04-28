@@ -35,18 +35,20 @@ This grunt task will pass as long as at least one file is matched, and all match
 ```js
 grunt.initConfig({
   coveralls: {
+    // Options relevant to all targets
     options: {
-      // LCOV coverage file relevant to every target
-      src: 'coverage-results/lcov.info',
-
       // When true, grunt-coveralls will only print a warning rather than
       // an error, to prevent CI builds from failing unnecessarily (e.g. if
       // coveralls.io is down). Optional, defaults to false.
       force: false
     },
+    
     your_target: {
-      // Target-specific LCOV coverage file
-      src: 'coverage-results/extra-results-*.info'
+      // LCOV coverage file (can be string, glob or array)
+      src: 'coverage-results/extra-results-*.info',
+      options: {
+        // Any options for just this target
+      }
     },
   },
 });
