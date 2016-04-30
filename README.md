@@ -5,7 +5,7 @@ Grunt-Coveralls
 [![Build Status](https://travis-ci.org/pimterry/grunt-coveralls.png)](https://travis-ci.org/pimterry/grunt-coveralls) [![Coverage Status](https://coveralls.io/repos/pimterry/grunt-coveralls/badge.png?branch=master)](https://coveralls.io/r/pimterry/grunt-coveralls?branch=master) [![Dependency status](https://david-dm.org/pimterry/grunt-coveralls/status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=dependencies&view=table) [![Dev Dependency Status](https://david-dm.org/pimterry/grunt-coveralls/dev-status.png)](https://david-dm.org/pimterry/grunt-coveralls#info=devDependencies&view=table)
 
 ## Getting Started
-This plugin requires Grunt `~0.4.2`
+This plugin requires Grunt `>=0.4.0`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -42,7 +42,7 @@ grunt.initConfig({
       // coveralls.io is down). Optional, defaults to false.
       force: false
     },
-    
+
     your_target: {
       // LCOV coverage file (can be string, glob or array)
       src: 'coverage-results/extra-results-*.info',
@@ -60,10 +60,3 @@ Note if you are new to grunt: You need to specify at least one target. Just spec
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. To ensure your code runs correctly, run `npm test`.
-
-## Release History
-_(Nothing yet)_
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pimterry/grunt-coveralls/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
